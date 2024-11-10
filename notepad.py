@@ -34,15 +34,14 @@ root.columnconfigure(1, minsize=800)
 text_edit = tk.Text(root)
 text_edit.grid(row=0, column=1, sticky="nsew")
 
-frame_button = tk.Frame(root, relief=tk.RAISED, bd=3)
-frame_button.grid(row=0, column=0, sticky="ns")
+# Menu bar
+menu_bar = tk.Menu(root)
+root.config(menu=menu_bar)
 
-button_open = tk.Button(frame_button, text="Open", command=open_file)
-button_open.grid(row=0, column=0, padx=5, pady=5)
-
-button_save = tk.Button(frame_button, text="Save", command=save_file)
-button_save.grid(row=1, column=0, padx=5, pady=5)
-
-
+# File menu
+file_menu = tk.Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="Open", command=open_file)
+file_menu.add_command(label="Save", command=save_file)
 
 root.mainloop()
