@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
+
+# File menu functions
 current_file = None
 
 def save_file(event=None):
@@ -56,7 +58,6 @@ root.columnconfigure(1, minsize=800)
 text_edit = tk.Text(root)
 text_edit.grid(row=0, column=1, sticky="nsew")
 
-# Menu bar
 menu_bar = tk.Menu(root)
 root.config(menu=menu_bar)
 
@@ -68,9 +69,21 @@ file_menu.add_command(label="Open", command=open_file, accelerator="Ctrl+O")
 file_menu.add_command(label="Save", command=save_file, accelerator="Ctrl+S")
 file_menu.add_command(label="Save as", command=save_file_as, accelerator="Ctrl+Shift+S")
 
+# Edit menu bar
+edit_menu = tk.Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="Edit", menu=edit_menu)
+edit_menu.add_command(label="Undo",command=text_edit.edit_undo, accelerator="Ctrl+Z")
+edit_menu.add_command(label="Redo",command=text_edit.edit_redo, accelerator="Ctrl+Y")
+
+
+# Keyboard binds - File menu
 root.bind('Control-n', new_file)
 root.bind('<Control-o>', open_file)
 root.bind('<Control-s>', save_file)
 root.bind('<Control-S>', save_file_as)
+
+# Keyboard binds - Edit menu
+root.bind('<Control-z>', text_edit.edit_undo)
+root.bind('<Control-y>', text_edit.edit_redo)
 
 root.mainloop()
