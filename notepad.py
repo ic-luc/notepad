@@ -1,29 +1,45 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
-def save_file():
+current_file = None
+
+def save_file(event=None):
+  global current_file
+  if current_file:
+    with open(current_file, "w") as file_output:
+      text = text_edit.get(1.0, tk.END)
+      file_output.write(text)
+    root.title(f"{current_file}")
+  else:
+    save_file_as()
+
+def save_file_as(event=None):
+  global current_file
   file_location = asksaveasfilename(
     defaultextension="txt", 
     filetypes=[("Text files", "*.txt"), ("All files","*.*")])
   
   if not file_location:
     return
+  current_file = file_location
   with open(file_location,"w") as file_output:
     text = text_edit.get(1.0, tk.END)
     file_output.write(text)
-  root.title(f"{file_location}")
+  root.title(f"{current_file}")
 
-def open_file():
+def open_file(event=None):
+  global current_file
   file_location = askopenfilename(
     filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
   
   if not file_location:
     return
+  current_file = file_location
   text_edit.delete(1.0, tk.END)
   with open(file_location, "r") as file_input:
     text = file_input.read()
     text_edit.insert(tk.END, text)
-  root.title(f"{file_location}")
+  root.title(f"{current_file}")
 
 root = tk.Tk()
 root.title("Notepad")
@@ -41,7 +57,12 @@ root.config(menu=menu_bar)
 # File menu
 file_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Open", command=open_file)
-file_menu.add_command(label="Save", command=save_file)
+file_menu.add_command(label="Open", command=open_file, accelerator="Ctrl+O")
+file_menu.add_command(label="Save", command=save_file, accelerator="Ctrl+S")
+file_menu.add_command(label="Save as", command=save_file_as, accelerator="Ctrl+Shift+S")
+
+root.bind('<Control-o>', open_file)
+root.bind('<Control-s>', save_file)
+root.bind('<Control-S>', save_file_as)
 
 root.mainloop()
