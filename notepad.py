@@ -63,6 +63,7 @@ root.config(menu=menu_bar)
 # File menu
 file_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="New File", command=new_file, accelerator="Ctrl+N")
 file_menu.add_command(label="Open", command=open_file, accelerator="Ctrl+O")
 file_menu.add_command(label="Save", command=save_file, accelerator="Ctrl+S")
 file_menu.add_command(label="Save as", command=save_file_as, accelerator="Ctrl+Shift+S")
